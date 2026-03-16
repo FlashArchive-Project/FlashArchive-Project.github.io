@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flash Archive - Geliştirici Merkezi</title>
+    <style>
+        :root {
+            --main-red: #e11d48;
+            --glass-bg: rgba(255, 255, 255, 0.98);
+            --text-color: #1f2937;
+        }
+
+        body {
+            margin: 0; padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #ffffff 0%, #f3f4f6 100%);
+            background-attachment: fixed; color: var(--text-color);
+            text-align: center;
+        }
+
+        /* Üst Menü */
+        nav { position: fixed; top: 0; right: 0; padding: 20px 40px; z-index: 1000; }
+        .nav-btn {
+            background: var(--main-red); color: white; border: none;
+            padding: 12px 25px; border-radius: 50px; font-weight: bold;
+            box-shadow: 0 4px 15px rgba(225, 29, 72, 0.3); cursor: pointer;
+            transition: 0.3s;
+        }
+        .nav-btn:hover { background: #be123c; transform: scale(1.05); }
+
+        /* Ana Sayfa Kutusu */
+        .glass-container {
+            background: white; border: 1px solid rgba(225, 29, 72, 0.2);
+            border-radius: 20px; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+            margin: 100px auto; padding: 50px; max-width: 700px;
+        }
+
+        h1 { color: var(--main-red); font-size: 2.5rem; margin-bottom: 10px; }
+        .btn {
+            background: var(--main-red); color: white; text-decoration: none;
+            padding: 15px 30px; border-radius: 50px; font-weight: bold;
+            display: inline-block; margin: 10px; transition: 0.3s;
+        }
+        .btn:hover { background: #be123c; transform: translateY(-3px); }
+
+        /* BELGESEL PENCERESİ (MODAL) */
+        .modal {
+            display: none; position: fixed; z-index: 2000;
+            left: 0; top: 0; width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.6); backdrop-filter: blur(8px);
+        }
+
+        .modal-content {
+            background-color: white; margin: 2% auto; padding: 0;
+            border-radius: 20px; width: 85%; max-width: 900px;
+            height: 85vh; overflow: hidden; display: flex; flex-direction: column;
+            border-top: 8px solid var(--main-red);
+        }
+
+        .modal-header { padding: 20px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
+        .modal-body { padding: 30px; overflow-y: auto; text-align: left; flex-grow: 1; }
+        .close-btn { font-size: 30px; cursor: pointer; color: #666; }
+
+        /* Bilgi Kartları */
+        .doc-card { background: #fffcfc; border: 1px solid #ffebeb; padding: 20px; border-radius: 12px; margin-bottom: 25px; }
+        .doc-card h3 { color: var(--main-red); margin-top: 0; border-bottom: 2px solid #ffebeb; padding-bottom: 5px; }
+        .code-box { background: #1e293b; color: #f87171; padding: 15px; border-radius: 8px; font-family: 'Consolas', monospace; display: block; margin: 10px 0; font-size: 0.9rem; line-height: 1.5; overflow-x: auto; }
+        
+        ol { padding-left: 20px; }
+        li { margin-bottom: 10px; font-weight: 500; }
+        li span { font-weight: normal; color: #4b5563; }
+
+        footer { margin-top: 40px; font-size: 0.8rem; color: #999; padding-bottom: 20px; }
+    </style>
+</head>
+<body>
+
+    <nav><button class="nav-btn" onclick="openDoc()">📖 Belgesel & Kod İpuçları</button></nav>
+
+    <div class="glass-container">
+        <header><img src="logo.png" alt="Flash Archive" style="max-width: 250px;"></header>
+        <h1>Flash Archive</h1>
+        <p>Flash (.swf) geliştirmek mi istiyorsunuz? <strong>Doğru yerdesiniz!</strong></p>
+        <div class="download-box">
+            <a href="https://drive.google.com/file/d/1WbPd2tbfMCs5btewHE5jGKxcdoZFdWNX/view?usp=sharing" target="_blank" class="btn">Apache Flex SDK İndir</a>
+            <a href="https://drive.google.com/file/d/1IWbBrCAgBlY57qoBkUf_XsyKiaOTirR3/view?usp=sharing" target="_blank" class="btn">Flash Projector İndir</a>
+        </div>
+    </div>
+
+    <div id="docModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 style="margin:0; color:var(--main-red)">📚 Flash Geliştirici Kütüphanesi</h2>
+                <span class="close-btn" onclick="closeDoc()">&times;</span>
+            </div>
+            <div class="modal-body">
+                
+                <div class="doc-card">
+                    <h3>🛠️ Apache Flex Nerede ve Nasıl Derlenir?</h3>
+                    <p>Apache Flex'in nerede?::</p>
+                    <code class="code-box">(kurduğun yer)\apache-flex-sdk-4.15.0\bin</code>
+                    <p><strong>FA.as</strong>dosya derleme kpdu:</p>
+                    <code class="code-box">(kurduğun yer)\apache-flex-sdk-4.15.0\bin\mxmlc.bat selam.as</code>
+                </div>
+
+                <div class="doc-card">
+                    <h3>💡 50 Kritik Kod İpucu</h3>
+                    <ol>
+                        <li><span><b>SWF Boyutu:</b> Kodun en başına <code>[SWF(width="800", height="600")]</code> ekle.</span></li>
+                        <li><span><b>FPS Ayarı:</b> Akıcılık için <code>[SWF(frameRate="60")]</code> kullan.</span></li>
+                        <li><span><b>Arka Plan:</b> <code>[SWF(backgroundColor="#FFFFFF")]</code> ile sahne rengini belirle.</span></li>
+                        <li><span><b>Kayıtlı Değişken:</b> Tam sayılar için <code>int</code>, ondalıklar için <code>Number</code> kullan.</span></li>
+                        <li><span><b>Döngü Başlat:</b> <code>addEventListener(Event.ENTER_FRAME, loop);</code> her karede çalışır.</span></li>
+                        <li><span><b>Tuş Dinleme:</b> <code>stage.addEventListener(KeyboardEvent.KEY_DOWN, onKey);</code> ile tuşları yakala.</span></li>
+                        <li><span><b>Mause Konumu:</b> <code>mouseX</code> ve <code>mouseY</code> ile imleci takip et.</span></li>
+                        <li><span><b>Obje Çizme:</b> <code>graphics.beginFill(0xFF0000);</code> ile boyamaya başla.</span></li>
+                        <li><span><b>Daire Çiz:</b> <code>graphics.drawCircle(x, y, yaricap);</code> ile yuvarlak yap.</span></li>
+                        <li><span><b>Temizlik:</b> Çizimden önce <code>graphics.clear();</code> yapmayı unutma.</span></li>
+                        <li><span><b>Görünmezlik:</b> <code>obje.visible = false;</code> ile objeyi gizle.</span></li>
+                        <li><span><b>Saydamlık:</b> <code>obje.alpha = 0.5;</code> yarı şeffaf yapar.</span></li>
+                        <li><span><b>Döndürme:</b> <code>obje.rotation += 5;</code> objeyi döndürür.</span></li>
+                        <li><span><b>Büyütme:</b> <code>scaleX</code> ve <code>scaleY</code> ile objeyi boyutlandır.</span></li>
+                        <li><span><b>Çarpışma:</b> <code>obj1.hitTestObject(obj2)</code> en basit çarpışma testidir.</span></li>
+                        <li><span><b>Hassas Temas:</b> <code>hitTestPoint(x, y, true)</code> gerçek piksel kontrolü yapar.</span></li>
+                        <li><span><b>Rastgele Sayı:</b> <code>Math.random() * 100;</code> 0-100 arası sayı üretir.</span></li>
+                        <li><span><b>Yazı Ekleme:</b> <code>new TextField();</code> ile ekrana metin yazdır.</span></li>
+                        <li><span><b>Font Ayarı:</b> <code>TextFormat</code> ile yazı tipi ve boyutunu değiştir.</span></li>
+                        <li><span><b>Gecikme:</b> <code>setTimeout(fonksiyon, 1000);</code> 1 saniye sonra çalıştırır.</span></li>
+                        <li><span><b>Zamanlayıcı:</b> <code>Timer</code> sınıfı ile düzenli aralıklarla işlem yap.</span></li>
+                        <li><span><b>Mesafe Ölçer:</b> <code>Math.sqrt(dx*dx + dy*dy)</code> ile iki obje arası mesafeyi bul.</span></li>
+                        <li><span><b>Açı Hesapla:</b> <code>Math.atan2(dy, dx)</code> ile hedef açıyı belirle.</span></li>
+                        <li><span><b>Hareketi Durdur:</b> <code>removeEventListener</code> ile gereksiz olayları kapat.</span></li>
+                        <li><span><b>En Öne Getir:</b> <code>setChildIndex(obj, numChildren - 1);</code> yap.</span></li>
+                        <li><span><b>Obje Silme:</b> <code>removeChild(obj);</code> ile sahneden kaldır.</span></li>
+                        <li><span><b>Diziye Ekle:</b> <code>zombiler.push(yeniZombi);</code> ile takip listesi yap.</span></li>
+                        <li><span><b>Diziden Sil:</b> <code>zombiler.splice(index, 1);</code> ile listeden at.</span></li>
+                        <li><span><b>Tam Ekran:</b> <code>stage.displayState = "fullScreen";</code></span></li>
+                        <li><span><b>Sağ Tık Kapat:</b> <code>stage.showDefaultContextMenu = false;</code></span></li>
+                        <li><span><b>Input Kutusu:</b> <code>txt.type = TextFieldType.INPUT;</code></span></li>
+                        <li><span><b>Filtreler:</b> <code>GlowFilter</code> ile parlama efekti ver.</span></li>
+                        <li><span><b>Bulanıklaştırma:</b> <code>BlurFilter</code> ile objeyi dağıt.</span></li>
+                        <li><span><b>Sürükleme:</b> <code>obj.startDrag();</code> ile objeyi fareyle taşı.</span></li>
+                        <li><span><b>Sürüklemeyi Bırak:</b> <code>obj.stopDrag();</code></span></li>
+                        <li><span><b>Mause Kursorü:</b> <code>obj.buttonMode = true;</code> el işareti çıkarır.</span></li>
+                        <li><span><b>Renk Değiştir:</b> <code>ColorTransform</code> ile rengi dinamik değiştir.</span></li>
+                        <li><span><b>Kareye Git:</b> MovieClip kullanıyorsan <code>gotoAndStop(5);</code></span></li>
+                        <li><span><b>Ses Çal:</b> <code>Sound</code> sınıfı ile mp3 yükle ve oynat.</span></li>
+                        <li><span><b>Ses Seviyesi:</b> <code>SoundTransform</code> ile sesi kıs veya aç.</span></li>
+                        <li><span><b>URL Aç:</b> <code>navigateToURL(new URLRequest("url"));</code></span></li>
+                        <li><span><b>Hafıza Boşalt:</b> Kullanılmayan objelere <code>null</code> ata.</span></li>
+                        <li><span><b>Sahne Genişliği:</b> <code>stage.stageWidth</code> değerini kullan.</span></li>
+                        <li><span><b>FPS Göstergesi:</b> Performansı takip etmek için bir sayaç yap.</span></li>
+                        <li><span><b>Klavye Kodu:</b> <code>event.keyCode</code> ile hangi tuşa basıldığını bul.</span></li>
+                        <li><span><b>Vektör Çizim:</b> <code>graphics.drawRoundRect</code> ile köşeleri yuvarlat.</span></li>
+                        <li><span><b>Katman Sırası:</b> <code>addChildAt(obj, 0);</code> en arkaya koyar.</span></li>
+                        <li><span><b>Obje Adı:</b> <code>obj.name = "dusman1";</code> ile isimlendir.</span></li>
+                        <li><span><b>Zombi Takibi:</b> <code>x += (hedefX - x) * 0.1;</code> yumuşak takip yapar.</span></li>
+                        <li><span><b>50. Pro İpucu:</b> <code>Math.PI / 180</code> ile Dereceyi Radyana çevirmeyi unutma!</span></li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p><strong>Yasal Uyarı:</strong> Flash® ve Adobe®, Adobe Inc. tescilli markalarıdır. Bu bağımsız bir arşivdir.</p>
+    </footer>
+
+    <script>
+        function openDoc() { document.getElementById("docModal").style.display = "block"; }
+        function closeDoc() { document.getElementById("docModal").style.display = "none"; }
+        window.onclick = function(event) {
+            let modal = document.getElementById("docModal");
+            if (event.target == modal) { modal.style.display = "none"; }
+        }
+    </script>
+</body>
+</html>
